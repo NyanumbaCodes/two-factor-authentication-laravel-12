@@ -1,11 +1,11 @@
 # Laravel 12 Two-Factor Authentication (2FA)
 
 ## 📌 Introduction
-This repository demonstrates how to implement **Two-Factor Authentication (2FA) in Laravel 12** using **Laravel Fortify**. Two-Factor Authentication adds an extra layer of security to your application, requiring users to verify their identity with an authentication code.
+This repository demonstrates how to implement **Two-Factor Authentication (2FA) in Laravel 12** using **pragmarx/google2fa-laravel**. Two-Factor Authentication adds an extra layer of security to your application, requiring users to verify their identity with an authentication code.
 
 ## 🎯 Features
-- **User Authentication with Fortify**
-- **Enabling & Verifying 2FA**
+- **User Authentication**
+- **Enabling & Verifying 2FA using Google2FA**
 - **Generating and Using Recovery Codes**
 - **Integration with TOTP Apps (Google Authenticator, Authy, etc.)**
 
@@ -46,10 +46,24 @@ php artisan key:generate
 php artisan migrate --seed
 ```
 
-### 6️⃣ Configure Laravel Fortify
-Fortify is already installed and set up in this project. Ensure the `config/fortify.php` file contains the necessary configurations for **two-factor authentication**.
+### 6️⃣ Install and Configure Google2FA
+Install the `pragmarx/google2fa-laravel` package:
+```bash
+composer require pragmarx/google2fa-laravel
+```
+Publish the config file:
+```bash
+php artisan vendor:publish --provider="PragmaRX\Google2FALaravel\ServiceProvider"
+```
 
-### 7️⃣ Start Development Server
+### 7️⃣ Implement Two-Factor Authentication
+Ensure your application handles the necessary logic for:
+- **Generating QR codes for Google Authenticator**
+- **Verifying user-entered OTPs**
+- **Providing recovery codes**
+- **Allowing users to disable 2FA if needed**
+
+### 8️⃣ Start Development Server
 ```bash
 php artisan serve
 ```
@@ -63,9 +77,20 @@ Access the app at `http://127.0.0.1:8000`
 5. **Enter the generated OTP code** to verify
 6. **Save your recovery codes** for backup
 
+## 🏆 Challenge for Developers
+In this implementation, recovery codes are generated when a user enables Two-Factor Authentication. Your challenge is to extend this system by allowing users to log in using a recovery code when they don't have access to their authenticator app.
+
+### Steps to Implement:
+- Create a form where users can enter a recovery code instead of an OTP.
+- Validate the entered recovery code against stored ones.
+- If valid, allow login and regenerate a new set of recovery codes.
+- Ensure used recovery codes cannot be reused.
+
+Let us know if you implement this! 🚀
+
 ## 🛠 Technologies Used
 - Laravel 12
-- Laravel Fortify
+- Pragmarx Google2FA-Laravel
 - Tailwind CSS (for UI)
 - Google Authenticator / Authy (for 2FA verification)
 
